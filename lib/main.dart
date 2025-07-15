@@ -8,14 +8,9 @@ import 'package:cloud_firestore/cloud_firestore.dart'; // Import para o Firestor
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Garante que o Flutter esteja inicializado
 
-  // Inicializa o Firebase com a configuração fornecida pelo ambiente
-  // Verifica se a configuração do Firebase está disponível
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Autentica o usuário no Firebase
   final FirebaseAuth auth = FirebaseAuth.instance;
-
   await auth.signInAnonymously();
   print('Autenticado anonimamente.');
 
@@ -31,20 +26,15 @@ class IdenzzaApp extends StatelessWidget {
       title: 'Idenzza - Branding de Marca',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        // Define a fonte padrão para toda a aplicação.
         fontFamily: 'Inter',
         useMaterial3: false,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        // Por padrão, o Flutter utiliza Material 2. Para usar Material 3,
-        // seria necessário definir useMaterial3: true. Como não queremos,
-        // garantimos que esta linha não está presente ou está como false.
       ),
       home: const LandingPage(),
     );
   }
 }
 
-// Convertendo LandingPage para StatefulWidget para gerenciar as chaves de rolagem
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 
@@ -53,25 +43,19 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  // Chaves globais para cada seção da página
   final GlobalKey _heroKey = GlobalKey();
   final GlobalKey _benefitsKey = GlobalKey();
   final GlobalKey _methodologyKey = GlobalKey();
-  final GlobalKey _contactKey =
-      GlobalKey(); // Usaremos a chave do rodapé para "Contato"
+  final GlobalKey _contactKey = GlobalKey();
 
-  // Função para rolar para uma seção específica
   void _scrollToSection(GlobalKey key) {
     Scrollable.ensureVisible(
       key.currentContext!,
-      duration: const Duration(
-        milliseconds: 500,
-      ), // Duração da animação de rolagem
-      curve: Curves.easeInOut, // Curva da animação
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
     );
   }
 
-  // Função para exibir o diálogo do questionário
   void _showQuestionnaireDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -83,16 +67,12 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Usamos o LayoutBuilder para tornar a página responsiva a diferentes tamanhos de tela.
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
-          // AppBar para a navegação superior.
           appBar: AppBar(
-            backgroundColor: const Color(
-              0xFF1A237E,
-            ), // Cor de fundo azul escuro
-            elevation: 0, // Remove a sombra da AppBar
+            backgroundColor: const Color(0xFF1A237E),
+            elevation: 0,
             title: const Text(
               'IDENZZA',
               style: TextStyle(
@@ -101,46 +81,34 @@ class _LandingPageState extends State<LandingPage> {
               ),
             ),
             actions: [
-              // Botões de navegação na AppBar
               TextButton(
                 onPressed: () => _scrollToSection(_heroKey),
-                child: const Text(
-                  'Início',
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: const Text('Início', style: TextStyle(color: Colors.white)),
               ),
               TextButton(
                 onPressed: () => _scrollToSection(_benefitsKey),
-                child: const Text(
-                  'Benefícios',
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: const Text('Benefícios', style: TextStyle(color: Colors.white)),
               ),
               TextButton(
                 onPressed: () => _scrollToSection(_methodologyKey),
-                child: const Text(
-                  'Metodologia',
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: const Text('Metodologia', style: TextStyle(color: Colors.white)),
               ),
               TextButton(
                 onPressed: () => _scrollToSection(_contactKey),
-                child: const Text(
-                  'Contato',
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: const Text('Contato', style: TextStyle(color: Colors.white)),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical:10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 10,
+                ),
                 child: TextButton(
                   onPressed: () {
-                    
                     _showQuestionnaireDialog(context);
                   },
                   style: TextButton.styleFrom(
-                    // fixedSize: Size(150, 50),
-                    backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFF1A237E),
+                    backgroundColor: const Color(0xFFFF9800),
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 10,
@@ -150,39 +118,29 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                   ),
                   child: const Text(
-                    'Começar Agora',
+                    'RAIO-X AGORA',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ],
           ),
-          // SingleChildScrollView permite que a página seja rolada.
           body: SingleChildScrollView(
             child: Column(
               children: [
-                // Seção Hero (Destaque)
-                // Adicionando a chave à seção
                 Container(
                   key: _heroKey,
                   child: _buildHeroSection(context, constraints),
                 ),
-                // Seção "Por que Sua Marca Pessoal é Fundamental?" (Benefícios)
-                // Adicionando a chave à seção
                 Container(
                   key: _benefitsKey,
                   child: _buildBenefitsSection(context, constraints),
                 ),
-                // Seção "Como Construímos Sua Marca" (Metodologia)
-                // Adicionando a chave à seção
                 Container(
                   key: _methodologyKey,
                   child: _buildMethodologySection(context, constraints),
                 ),
-                // Seção "Pronto para Construir Sua Marca de Sucesso?" (Chamada para Ação)
                 _buildCallToActionSection(context, constraints),
-                // Rodapé
-                // Adicionando a chave à seção
                 Container(
                   key: _contactKey,
                   child: _buildFooterSection(context, constraints),
@@ -195,10 +153,7 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  // --- Seções da Landing Page ---
-
   Widget _buildHeroSection(BuildContext context, BoxConstraints constraints) {
-    // A seção Hero ocupa 100% da largura e tem uma altura mínima.
     final bool isDesktop = constraints.maxWidth > 800;
 
     return Container(
@@ -210,18 +165,18 @@ class _LandingPageState extends State<LandingPage> {
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFF1A237E), // Azul escuro
-            Color(0xFF0D47A1), // Azul médio
+            Color(0xFF1A237E),
+            Color(0xFF0D47A1),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center, // Centraliza o conteúdo
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Sua marca é unica',
+            'Sua Marca com Identidade',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: isDesktop ? 48 : 32,
@@ -231,7 +186,7 @@ class _LandingPageState extends State<LandingPage> {
           ),
           SizedBox(height: isDesktop ? 20 : 15),
           Text(
-            'Clareza, posicionamento e autenticidade: a ponte entre quem você é e como você é percebido.',
+            'Transforme sua essência em autoridade digital com uma marca clara e reconhecida.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: isDesktop ? 18 : 16,
@@ -239,35 +194,34 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
           SizedBox(height: isDesktop ? 60 : 40),
-          // Estatísticas (85%, 3x, 92%) em cards
           isDesktop
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: _buildStatCard(
-                        '85%',
-                        'dos profissionais com marca forte ganham mais',
-                        height: 150,
-                      ), // Altura fixa para desktop
-                    ),
-                    SizedBox(width: 40), // Espaçamento entre os cards
-                    Expanded(
-                      child: _buildStatCard(
-                        '3x',
-                        'mais oportunidades de negócio',
-                        height: 150,
-                      ), // Altura fixa para desktop
-                    ),
-                    SizedBox(width: 40), // Espaçamento entre os cards
-                    Expanded(
-                      child: _buildStatCard(
-                        '92%',
-                        'confiam em marcas autênticas',
-                        height: 150,
-                      ), // Altura fixa para desktop
-                    ),
-                  ],
+              ? IntrinsicHeight(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: _buildStatCard(
+                          '85%',
+                          '''dos profissionais com marca forte ganham mais
+"Segundo pesquisas de mercado, marcas fortes ampliam reconhecimento e preço percebido"''',
+                        ),
+                      ),
+                      const SizedBox(width: 40),
+                      Expanded(
+                        child: _buildStatCard(
+                          '3x',
+                          '''mais convites, parcerias e propostas certas''',
+                        ),
+                      ),
+                      const SizedBox(width: 40),
+                      Expanded(
+                        child: _buildStatCard(
+                          '92%',
+                          '''dos consumidores escolhem marcas em que confiam de verdade''',
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               : Wrap(
                   spacing: 20,
@@ -275,40 +229,36 @@ class _LandingPageState extends State<LandingPage> {
                   alignment: WrapAlignment.center,
                   children: [
                     SizedBox(
-                      width: 200, // Largura fixa para mobile
-                      height: 150, // Altura fixa para mobile
+                      width: 200,
                       child: _buildStatCard(
                         '85%',
-                        'dos profissionais com marca forte ganham mais',
+                        '''dos profissionais com marca forte ganham mais
+"Segundo pesquisas de mercado, marcas fortes ampliam reconhecimento e preço percebido"''',
                       ),
                     ),
                     SizedBox(
-                      width: 200, // Largura fixa para mobile
-                      height: 150, // Altura fixa para mobile
+                      width: 200,
                       child: _buildStatCard(
                         '3x',
-                        'mais oportunidades de negócio',
+                        '''mais convites, parcerias e propostas certas''',
                       ),
                     ),
                     SizedBox(
-                      width: 200, // Largura fixa para mobile
-                      height: 150, // Altura fixa para mobile
+                      width: 200,
                       child: _buildStatCard(
                         '92%',
-                        'confiam em marcas autênticas',
+                        '''dos consumidores escolhem marcas em que confiam de verdade''',
                       ),
                     ),
                   ],
                 ),
           SizedBox(height: isDesktop ? 60 : 40),
-          // Botão "Descobrir Minha Marca"
           ElevatedButton(
             onPressed: () {
-              // Abre o formulário de questionário
               _showQuestionnaireDialog(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF9800), // Laranja
+              backgroundColor: const Color(0xFFFF9800),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
               shape: RoundedRectangleBorder(
@@ -319,32 +269,30 @@ class _LandingPageState extends State<LandingPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            child: const Text('Descobrir minha marca'),
+            child: const Text('Desbloquear Minha Marca Agora'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildStatCard(String value, String description, {double? height}) {
+  Widget _buildStatCard(String value, String description) {
     return Container(
-      height: height, // Altura opcional para padronização
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1), // Fundo translúcido
+        color: Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: Colors.white.withOpacity(0.2)),
       ),
       child: Column(
-        mainAxisAlignment:
-            MainAxisAlignment.center, // Centraliza o conteúdo verticalmente
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             value,
             style: const TextStyle(
               fontSize: 36,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Color(0xFFFF9800),
             ),
           ),
           const SizedBox(height: 10),
@@ -392,56 +340,54 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
           SizedBox(height: isDesktop ? 60 : 30),
-          // Grid de benefícios
           GridView.builder(
             shrinkWrap: true,
-            physics:
-                const NeverScrollableScrollPhysics(), // Desabilita o scroll do GridView
+            physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: isDesktop
                   ? 4
                   : (constraints.maxWidth > 600 ? 2 : 1),
               crossAxisSpacing: isDesktop ? 30 : 20,
               mainAxisSpacing: isDesktop ? 30 : 20,
-              // Ajuste para manter a proporção em diferentes tamanhos, visando uma altura menor
-              childAspectRatio: isDesktop
-                  ? 1.3
-                  : 1.1, // Aumentado para deixar os cards mais curtos
+              childAspectRatio: isDesktop ? 0.9 : 0.8,
             ),
-            itemCount: 4, // 4 itens de benefício
+            itemCount: 4,
             itemBuilder: (context, index) {
               final List<Map<String, dynamic>> benefits = [
                 {
-                  'icon': Icons.emoji_events, // Ícone de coroa
+                  'icon': Icons.emoji_events,
                   'title': 'Autoridade no mercado',
-                  'description': 'de reconhecimento profissional',
-                  'highlight': '+150%',
-                  'iconColor': const Color(0xFF1A237E), // Azul escuro
-                  'iconBgColor': const Color(0xFFE3F2FD), // Azul claro
+                  'description':
+                      'A marca certa posiciona você como referência.',
+                  'highlight': '+150% de percepção profissional',
+                  'iconColor': const Color(0xFF1A237E),
+                  'iconBgColor': const Color(0xFFE3F2FD),
                 },
                 {
-                  'icon': Icons.people_alt, // Ícone de atração de clientes
+                  'icon': Icons.people_alt,
                   'title': 'Atração de clientes ideais',
-                  'description': 'em qualidade de leads',
-                  'highlight': '+200%',
-                  'iconColor': const Color(0xFF0D47A1), // Azul médio
-                  'iconBgColor': const Color(0xFFBBDEFB), // Azul mais claro
+                  'description':
+                      'Profissionais com marca forte atraem quem realmente valoriza o seu trabalho.',
+                  'highlight': '+200% na qualidade dos leads',
+                  'iconColor': const Color(0xFF0D47A1),
+                  'iconBgColor': const Color(0xFFBBDEFB),
                 },
                 {
-                  'icon': Icons.rocket_launch, // Ícone de foguete
+                  'icon': Icons.rocket_launch,
                   'title': 'Crescimento acelerado',
-                  'description': 'em oportunidades',
-                  'highlight': '+300%',
-                  'iconColor': const Color(0xFFFF9800), // Laranja
-                  'iconBgColor': const Color(0xFFFFECB3), // Amarelo claro
+                  'description':
+                      'Quando sua marca comunica bem, o mercado responde com força.',
+                  'highlight': '+300% nas oportunidades',
+                  'iconColor': const Color(0xFFFF9800),
+                  'iconBgColor': const Color(0xFFFFECB3),
                 },
                 {
-                  'icon': Icons.security, // Ícone de escudo
+                  'icon': Icons.security,
                   'title': 'Proteção contra crises',
-                  'description': 'de estabilidade',
-                  'highlight': '+80%',
-                  'iconColor': const Color(0xFF4CAF50), // Verde
-                  'iconBgColor': const Color(0xFFDCEDC8), // Verde claro
+                  'description': 'Uma marca sólida sustenta sua autoridade mesmo em tempos difíceis.',
+                  'highlight': '+80% em estabilidade',
+                  'iconColor': const Color(0xFF4CAF50),
+                  'iconBgColor': const Color(0xFFDCEDC8),
                 },
               ];
               final benefit = benefits[index];
@@ -455,6 +401,9 @@ class _LandingPageState extends State<LandingPage> {
               );
             },
           ),
+          SizedBox(height: isDesktop ? 60 : 30),
+          const Text(
+              '''*Dados estimados com base em tendências de mercado e análises internas da metodologia Idenzza. Resultados reais podem variar conforme o nível de implementação e maturidade da marca."''')
         ],
       ),
     );
@@ -475,6 +424,7 @@ class _LandingPageState extends State<LandingPage> {
         padding: const EdgeInsets.all(25.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.all(12),
@@ -499,13 +449,14 @@ class _LandingPageState extends State<LandingPage> {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1A237E), // Cor do destaque
+                color: Color(0xFF1A237E),
               ),
             ),
-            // Removendo o Expanded aqui para controlar a altura do texto
-            Text(
-              description,
-              style: const TextStyle(fontSize: 15, color: Colors.black54),
+            Expanded(
+              child: Text(
+                description,
+                style: const TextStyle(fontSize: 15, color: Colors.black54),
+              ),
             ),
           ],
         ),
@@ -529,7 +480,7 @@ class _LandingPageState extends State<LandingPage> {
       child: Column(
         children: [
           Text(
-            'Nossa Metodologia em 4 Etapas',
+            'O Caminho da sua Marca com Identidade',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: isDesktop ? 38 : 28,
@@ -547,7 +498,6 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
           SizedBox(height: isDesktop ? 60 : 30),
-          // Itens da metodologia em linha para desktop, em coluna para mobile
           isDesktop
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -555,30 +505,30 @@ class _LandingPageState extends State<LandingPage> {
                   children: [
                     _buildMethodologyStep(
                       stepNumber: '01',
-                      title: 'Descoberta Profunda',
+                      title: 'Diagnóstico Inteligente',
                       description:
-                          'Formulário estratégico para mapear sua essência, valores e diferenciais competitivos',
+                          '''Mapeie sua essência com precisão, combinando IA, estratégia e branding personalizado''',
                       color: const Color(0xFF1A237E),
                     ),
                     _buildMethodologyStep(
                       stepNumber: '02',
-                      title: 'Estratégia Personalizada',
+                      title: '''Reposicionamento com Essência''',
                       description:
-                          'Definição de nicho, proposta de valor única e plano de comunicação direcionado',
+                          '''Definição de nicho, voz autêntica e uma comunicação que traduz quem você é''',
                       color: const Color(0xFF0D47A1),
                     ),
                     _buildMethodologyStep(
                       stepNumber: '03',
                       title: 'Implementação Guiada',
                       description:
-                          'Ambientação digital, produção de conteúdo estratégico e networking direcionado',
+                          '''Do conceito à prática: alinhamento visual, co-criando conteúdos estratégicos com foco em autoridade e conexão''',
                       color: const Color(0xFFFF9800),
                     ),
                     _buildMethodologyStep(
                       stepNumber: '04',
                       title: 'Resultados Mensuráveis',
                       description:
-                          'Métricas de engajamento, análise de dados e otimização contínua',
+                          '''Você vê o impacto: monitoramos dados reais e ajustamos sua presença para gerar resultados consistentemente''',
                       color: const Color(0xFF4CAF50),
                     ),
                   ],
@@ -587,33 +537,30 @@ class _LandingPageState extends State<LandingPage> {
                   children: [
                     _buildMethodologyStep(
                       stepNumber: '01',
-                      title: 'Descoberta Profunda',
+                      title: 'Diagnóstico Inteligente',
                       description:
-                          'Formulário estratégico para mapear sua essência, valores e diferenciais competitivos',
+                          '''Mapeie sua essência com precisão, combinando IA, estratégia e branding personalizado''',
                       color: const Color(0xFF1A237E),
                     ),
-                    const SizedBox(height: 30),
                     _buildMethodologyStep(
                       stepNumber: '02',
-                      title: 'Estratégia Personalizada',
+                      title: '''Reposicionamento com Essência''',
                       description:
-                          'Definição de nicho, proposta de valor única e plano de comunicação direcionado',
+                          '''Definição de nicho, voz autêntica e uma comunicação que traduz quem você é''',
                       color: const Color(0xFF0D47A1),
                     ),
-                    const SizedBox(height: 30),
                     _buildMethodologyStep(
                       stepNumber: '03',
                       title: 'Implementação Guiada',
                       description:
-                          'Ambientação digital, produção de conteúdo estratégico e networking direcionado',
+                          '''Do conceito à prática: alinhamento visual, co-criando conteúdos estratégicos com foco em autoridade e conexão''',
                       color: const Color(0xFFFF9800),
                     ),
-                    const SizedBox(height: 30),
                     _buildMethodologyStep(
                       stepNumber: '04',
-                      title: ' Resultados Mensuráveis',
+                      title: 'Resultados Mensuráveis',
                       description:
-                          'Métricas de engajamento, análise de dados e otimização contínua',
+                          '''Você vê o impacto: monitoramos dados reais e ajustamos sua presença para gerar resultados consistentemente''',
                       color: const Color(0xFF4CAF50),
                     ),
                   ],
@@ -630,7 +577,7 @@ class _LandingPageState extends State<LandingPage> {
     required Color color,
   }) {
     return SizedBox(
-      width: 200, // Largura fixa para cada passo da metodologia
+      width: 200,
       child: Column(
         children: [
           Container(
@@ -683,8 +630,8 @@ class _LandingPageState extends State<LandingPage> {
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFF0D47A1), // Azul médio
-            Color(0xFF1A237E), // Azul escuro
+            Color(0xFF0D47A1),
+            Color(0xFF1A237E),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -711,14 +658,12 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
           SizedBox(height: isDesktop ? 50 : 30),
-          // Botão "Iniciar Minha Análise Gratuita"
           ElevatedButton(
             onPressed: () {
-              // Abre o formulário de questionário
               _showQuestionnaireDialog(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF9800), // Laranja
+              backgroundColor: const Color(0xFFFF9800),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
               shape: RoundedRectangleBorder(
@@ -741,7 +686,7 @@ class _LandingPageState extends State<LandingPage> {
 
     return Container(
       width: double.infinity,
-      color: const Color(0xFF212121), // Cor de fundo escura para o rodapé
+      color: const Color(0xFF212121),
       padding: EdgeInsets.symmetric(
         vertical: isDesktop ? 50 : 30,
         horizontal: isDesktop ? constraints.maxWidth * 0.1 : 20,
@@ -754,7 +699,6 @@ class _LandingPageState extends State<LandingPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Coluna IDENZZA
                     Expanded(
                       flex: 2,
                       child: Column(
@@ -779,7 +723,6 @@ class _LandingPageState extends State<LandingPage> {
                         ],
                       ),
                     ),
-                    // Coluna Contato
                     Expanded(
                       flex: 1,
                       child: Column(
@@ -796,17 +739,15 @@ class _LandingPageState extends State<LandingPage> {
                           const SizedBox(height: 10),
                           Row(
                             children: const [
-                              Icon(
-                                Icons.email,
-                                color: Colors.white,
-                                size: 18,
-                              ),
+                              Icon(Icons.email, color: Colors.white, size: 18),
                               SizedBox(width: 8),
-                              Text(
-                                'alanrendeiro.fotografia@gmail.com',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
+                              Expanded(
+                                child: Text(
+                                  'alanrendeiro.fotografia@gmail.com',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ],
@@ -814,11 +755,7 @@ class _LandingPageState extends State<LandingPage> {
                           const SizedBox(height: 5),
                           Row(
                             children: const [
-                              Icon(
-                                Icons.phone,
-                                color: Colors.white,
-                                size: 18,
-                              ),
+                              Icon(Icons.phone, color: Colors.white, size: 18),
                               SizedBox(width: 8),
                               Text(
                                 '(91) 98972-7997',
@@ -838,11 +775,13 @@ class _LandingPageState extends State<LandingPage> {
                                 size: 18,
                               ),
                               SizedBox(width: 8),
-                              Text(
-                                'Tv Doutor Moraes 727, Belém- PA',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
+                              Expanded(
+                                child: Text(
+                                  'Tv Doutor Moraes 727, Belém- PA',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ],
@@ -850,7 +789,6 @@ class _LandingPageState extends State<LandingPage> {
                         ],
                       ),
                     ),
-                    // Coluna Redes Sociais
                     Expanded(
                       flex: 1,
                       child: Column(
@@ -921,9 +859,11 @@ class _LandingPageState extends State<LandingPage> {
                       children: const [
                         Icon(Icons.email, color: Colors.white, size: 18),
                         SizedBox(width: 8),
-                        Text(
-                          'alanrendeiro.fotografia@gmail.com',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        Expanded(
+                          child: Text(
+                            'alanrendeiro.fotografia@gmail.com',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
                         ),
                       ],
                     ),
@@ -941,15 +881,13 @@ class _LandingPageState extends State<LandingPage> {
                     const SizedBox(height: 5),
                     Row(
                       children: const [
-                        Icon(
-                          Icons.location_on,
-                          color: Colors.white,
-                          size: 18,
-                        ),
+                        Icon(Icons.location_on, color: Colors.white, size: 18),
                         SizedBox(width: 8),
-                        Text(
-                          'Tv Doutor Moraes 727, Belém- PA',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        Expanded(
+                          child: Text(
+                            'Tv Doutor Moraes 727, Belém- PA',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
                         ),
                       ],
                     ),
@@ -984,7 +922,6 @@ class _LandingPageState extends State<LandingPage> {
                   ],
                 ),
           const Divider(color: Colors.white38, height: 50, thickness: 1),
-          // Direitos autorais e crédito do desenvolvedor
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -1003,7 +940,6 @@ class _LandingPageState extends State<LandingPage> {
                   if (await canLaunchUrl(url)) {
                     await launchUrl(url);
                   } else {
-                    // Tratar erro: não foi possível abrir a URL
                     print('Não foi possível abrir a URL: $url');
                   }
                 },
@@ -1012,8 +948,7 @@ class _LandingPageState extends State<LandingPage> {
                   style: TextStyle(
                     fontSize: isDesktop ? 14 : 12,
                     color: Colors.white54,
-                    decoration: TextDecoration
-                        .underline, // Sublinhado para indicar que é um link
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),
@@ -1033,7 +968,7 @@ class _LandingPageState extends State<LandingPage> {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: Colors.blueAccent, // Cor de fundo para os ícones
+          color: Colors.blueAccent,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
@@ -1041,7 +976,7 @@ class _LandingPageState extends State<LandingPage> {
           child: Image.network(
             imageUrl,
             errorBuilder: (context, error, stackTrace) {
-              return Icon(Icons.error, color: Colors.white); // Fallback icon
+              return const Icon(Icons.error, color: Colors.white);
             },
           ),
         ),
@@ -1050,7 +985,6 @@ class _LandingPageState extends State<LandingPage> {
   }
 }
 
-// Widget para o diálogo do questionário
 class QuestionnaireDialog extends StatefulWidget {
   const QuestionnaireDialog({super.key});
 
@@ -1062,71 +996,40 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  // GlobalKey para o formulário de cada página (para validação)
   final List<GlobalKey<FormState>> _formKeys = List.generate(
-    5,
+    7, // Now 7 pages (0-6)
     (_) => GlobalKey<FormState>(),
   );
 
-  // Controladores para os campos de texto de todas as perguntas
-  final TextEditingController _fullNameController =
-      TextEditingController(); // Q1
-  final TextEditingController _professionController =
-      TextEditingController(); // Q2
-  final TextEditingController _brandSocialMediaController =
-      TextEditingController(); // Q3
-  final TextEditingController _threeWordsController =
-      TextEditingController(); // Q4
-  final TextEditingController _motivationController =
-      TextEditingController(); // Q5
-  final TextEditingController _storyController = TextEditingController(); // Q6
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _professionController = TextEditingController();
+  final TextEditingController _brandSocialMediaController = TextEditingController();
+  final TextEditingController _threeWordsController = TextEditingController();
+  final TextEditingController _motivationController = TextEditingController();
+  final TextEditingController _storyController = TextEditingController();
+  final TextEditingController _rememberedByController = TextEditingController();
+  final TextEditingController _uniqueSellingPointController = TextEditingController();
+  final TextEditingController _clientComplimentsController = TextEditingController();
+  final TextEditingController _notAsBrandController = TextEditingController();
+  final TextEditingController _admiredBrandsProfessionalsController = TextEditingController();
+  final TextEditingController _idealClientController = TextEditingController();
+  final TextEditingController _clientProblemsController = TextEditingController();
+  final TextEditingController _clientSolutionSearchController = TextEditingController();
+  final TextEditingController _uniqueHelpController = TextEditingController();
+  final TextEditingController _consumedBrandsController = TextEditingController();
+  final TextEditingController _socialMediaPresenceController = TextEditingController();
+  final TextEditingController _publishFrequencyController = TextEditingController();
+  final TextEditingController _contentWorksBestController = TextEditingController();
+  String? _imageAlignmentAnswer;
+  final TextEditingController _admiredCommunicationBrandsController = TextEditingController();
+  final TextEditingController _repositioningGoalController = TextEditingController();
+  final TextEditingController _communicationChallengesController = TextEditingController();
+  final TextEditingController _ifRecognizedChangeController = TextEditingController();
+  final TextEditingController _brandAsSomethingController = TextEditingController();
+  double _brandPositioningScore = 6.0;
 
-  final TextEditingController _rememberedByController =
-      TextEditingController(); // Q7
-  final TextEditingController _uniqueSellingPointController =
-      TextEditingController(); // Q8
-  final TextEditingController _clientComplimentsController =
-      TextEditingController(); // Q9
-  final TextEditingController _notAsBrandController =
-      TextEditingController(); // Q10
-  final TextEditingController _admiredBrandsProfessionalsController =
-      TextEditingController(); // Q11
-
-  final TextEditingController _idealClientController =
-      TextEditingController(); // Q12
-  final TextEditingController _clientProblemsController =
-      TextEditingController(); // Q13
-  final TextEditingController _clientSolutionSearchController =
-      TextEditingController(); // Q14
-  final TextEditingController _uniqueHelpController =
-      TextEditingController(); // Q15
-  final TextEditingController _consumedBrandsController =
-      TextEditingController(); // Q16
-
-  final TextEditingController _socialMediaPresenceController =
-      TextEditingController(); // Q17
-  final TextEditingController _publishFrequencyController =
-      TextEditingController(); // Q18
-  final TextEditingController _contentWorksBestController =
-      TextEditingController(); // Q19
-  String? _imageAlignmentAnswer; // Q20 (RadioListTile)
-  final TextEditingController _admiredCommunicationBrandsController =
-      TextEditingController(); // Q21
-
-  final TextEditingController _repositioningGoalController =
-      TextEditingController(); // Q22
-  final TextEditingController _communicationChallengesController =
-      TextEditingController(); // Q23
-  final TextEditingController _ifRecognizedChangeController =
-      TextEditingController(); // Q24
-  final TextEditingController _brandAsSomethingController =
-      TextEditingController(); // Q25
-  double _brandPositioningScore = 6.0; // Q26 (Slider)
-
-  // Map para armazenar todas as respostas
   final Map<String, dynamic> _answers = {};
 
-  // Instância do Firestore
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
@@ -1138,24 +1041,20 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
     _threeWordsController.dispose();
     _motivationController.dispose();
     _storyController.dispose();
-
     _rememberedByController.dispose();
     _uniqueSellingPointController.dispose();
     _clientComplimentsController.dispose();
     _notAsBrandController.dispose();
     _admiredBrandsProfessionalsController.dispose();
-
     _idealClientController.dispose();
     _clientProblemsController.dispose();
     _clientSolutionSearchController.dispose();
     _uniqueHelpController.dispose();
     _consumedBrandsController.dispose();
-
     _socialMediaPresenceController.dispose();
     _publishFrequencyController.dispose();
     _contentWorksBestController.dispose();
     _admiredCommunicationBrandsController.dispose();
-
     _repositioningGoalController.dispose();
     _communicationChallengesController.dispose();
     _ifRecognizedChangeController.dispose();
@@ -1163,25 +1062,20 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
     super.dispose();
   }
 
-  // Função para avançar para a próxima página
   void _nextPage() {
     if (_formKeys[_currentPage].currentState!.validate()) {
-      _formKeys[_currentPage].currentState!
-          .save(); // Salva os dados do formulário
-      if (_currentPage < 4) {
-        // Total de 5 páginas (índice 0 a 4)
+      _formKeys[_currentPage].currentState!.save();
+      if (_currentPage < 6) {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeIn,
         );
       } else {
-        // Última página, finalizar questionário
         _submitForm();
       }
     }
   }
 
-  // Função para voltar para a página anterior
   void _previousPage() {
     if (_currentPage > 0) {
       _pageController.previousPage(
@@ -1191,48 +1085,47 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
     }
   }
 
-  // Função para enviar o formulário para o Firestore
   void _submitForm() async {
-    // Coleta todos os dados do formulário
-    _answers['fullName'] = _fullNameController.text;
-    _answers['profession'] = _professionController.text;
-    _answers['brandSocialMedia'] = _brandSocialMediaController.text;
-    _answers['threeWords'] = _threeWordsController.text;
-    _answers['motivation'] = _motivationController.text;
-    _answers['story'] = _storyController.text;
+    _answers.clear();
 
-    _answers['rememberedBy'] = _rememberedByController.text;
-    _answers['uniqueSellingPoint'] = _uniqueSellingPointController.text;
-    _answers['clientCompliments'] = _clientComplimentsController.text;
-    _answers['notAsBrand'] = _notAsBrandController.text;
-    _answers['admiredBrandsProfessionals'] =
-        _admiredBrandsProfessionalsController.text;
+    // Changed keys to Portuguese in the map for Firestore
+    _answers['nomeCompleto'] = _fullNameController.text;
+    _answers['profissaoEspecialidade'] = _professionController.text;
+    _answers['nomeMarcaRedesSociais'] = _brandSocialMediaController.text;
+    _answers['tresPalavrasMarca'] = _threeWordsController.text;
+    _answers['motivacaoCarreira'] = _motivationController.text;
+    _answers['historiaMarcante'] = _storyController.text;
+    _answers['comoGostariaSerLembrado'] = _rememberedByController.text;
+    _answers['oQueSoVoceFaz'] = _uniqueSellingPointController.text;
+    _answers['elogiosClientes'] = _clientComplimentsController.text;
+    _answers['naoComoMarca'] = _notAsBrandController.text;
+    _answers['marcasProfissionaisAdmirados'] = _admiredBrandsProfessionalsController.text;
+    _answers['clienteIdeal'] = _idealClientController.text;
+    _answers['problemasDesejosCliente'] = _clientProblemsController.text;
+    _answers['ondeClienteBuscaSolucoes'] = _clientSolutionSearchController.text;
+    _answers['comoAjudaUnicamente'] = _uniqueHelpController.text;
+    _answers['marcasConsumidasPeloPublico'] = _consumedBrandsController.text;
+    _answers['presencaRedesSociais'] = _socialMediaPresenceController.text;
+    _answers['frequenciaPublicacao'] = _publishFrequencyController.text;
+    _answers['tipoConteudoMelhor'] = _contentWorksBestController.text;
+    _answers['alinhamentoImagemProposito'] = _imageAlignmentAnswer;
+    _answers['marcasComunicacaoAdmiradas'] = _admiredCommunicationBrandsController.text;
+    _answers['objetivoReposicionamento'] = _repositioningGoalController.
+text;
+    _answers['desafiosComunicacaoAtual'] = _communicationChallengesController.text;
+    _answers['mudancaMarcaReconhecida'] = _ifRecognizedChangeController.text;
+    _answers['marcaComoAlgo'] = _brandAsSomethingController.text;
+    _answers['pontuacaoPosicionamento'] = _brandPositioningScore.round();
 
-    _answers['idealClient'] = _idealClientController.text;
-    _answers['clientProblems'] = _clientProblemsController.text;
-    _answers['clientSolutionSearch'] = _clientSolutionSearchController.text;
-    _answers['uniqueHelp'] = _uniqueHelpController.text;
-    _answers['consumedBrands'] = _consumedBrandsController.text;
-
-    _answers['socialMediaPresence'] = _socialMediaPresenceController.text;
-    _answers['publishFrequency'] = _publishFrequencyController.text;
-    _answers['contentWorksBest'] = _contentWorksBestController.text;
-    _answers['imageAlignment'] = _imageAlignmentAnswer;
-    _answers['admiredCommunicationBrands'] =
-        _admiredCommunicationBrandsController.text;
-
-    _answers['repositioningGoal'] = _repositioningGoalController.text;
-    _answers['communicationChallenges'] =
-        _communicationChallengesController.text;
-    _answers['ifRecognizedChange'] = _ifRecognizedChangeController.text;
-    _answers['brandAsSomething'] = _brandAsSomethingController.text;
-    _answers['brandPositioningScore'] = _brandPositioningScore.round();
-
-    // Obtém o ID do usuário atual (autenticado anonimamente ou com token)
     final String userId = FirebaseAuth.instance.currentUser?.uid ?? 'anonymous';
 
     try {
-      // Salva os dados no Firestore
+      // await Navigator.of(context).pop();
+
+      if (!mounted) {
+        print('Widget not mounted after popping, cannot proceed.');
+        return;
+      }
 
       await _firestore
           .collection('idenzza')
@@ -1241,55 +1134,179 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
           .doc(userId)
           .collection('questionnaires')
           .add({
-            ..._answers, // Adiciona todas as respostas coletadas
-            'timestamp':
-                FieldValue.serverTimestamp(), // Adiciona um timestamp do servidor
-            'userId': userId, // Adiciona o ID do usuário para referência
+            ..._answers,
+            'timestamp': FieldValue.serverTimestamp(),
+            'userId': userId,
           });
 
-      print('Formulário salvo com sucesso no Firestore!');
-      // Você pode adicionar um AlertDialog de sucesso aqui
-      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Sucesso!'),
-            content: const Text('Seu formulário foi enviado com sucesso.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Fecha o AlertDialog
-                  Navigator.of(context).pop(); // Fecha o formulário
-                },
-                child: const Text('OK'),
+            scrollable: true,
+            backgroundColor: const Color(0xFF1A237E),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            content: SizedBox(
+              width: 500,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF4CAF50),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Parabéns! Sua marca está prestes a se transformar.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Você acaba de dar o primeiro passo rumo a uma marca mais autêntica, estratégica e memorável.\n\nNossa equipe já recebeu suas respostas e, agora, iniciaremos uma análise profunda do seu perfil profissional para desenvolver um diagnóstico exclusivo - feito sob medida para seus objetivos de posicionamento.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Colors.white70),
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildChecklistItem(
+                          'Análise completa do seu perfil e essência de marca',
+                        ),
+                        _buildChecklistItem(
+                          'Diagnóstico estratégico entregue em até 24h úteis',
+                        ),
+                        _buildChecklistItem(
+                          'Proposta personalizada com recomendações táticas',
+                        ),
+                        _buildChecklistItem(
+                          'Convite para uma consultoria gratuita com especialista',
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Todas as informações são tratadas com confidencialidade e usadas exclusivamente para construir a sua estratégia de marca.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: Colors.white54),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final Uri url = Uri.parse(
+                        'https://wa.me/559189727997?text=Olá,%20gostaria%20de%20receber%20minha%20análise!',
+                      );
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url);
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Não foi possível abrir a URL: $url')),
+                        );
+                        print('Não foi possível abrir a URL: $url');
+                      }
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF9800),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Fale com o especialista e receba sua análise →',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'IDENZZA',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           );
         },
       );
     } catch (e) {
       print('Erro ao salvar o formulário no Firestore: $e');
-      // Você pode adicionar um AlertDialog de erro aqui
       // ignore: use_build_context_synchronously
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Erro!'),
-            content: Text('Ocorreu um erro ao enviar seu formulário: $e'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Fecha o AlertDialog
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Erro!'),
+              content: Text('Ocorreu um erro ao enviar seu formulário: $e'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
+  }
+
+  Widget _buildChecklistItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(
+            Icons.check,
+            color: Color(0xFF4CAF50),
+            size: 20,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 16, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -1298,63 +1315,60 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 10,
       child: Container(
-        width:
-            MediaQuery.of(context).size.width * 0.8, // 80% da largura da tela
-        height:
-            MediaQuery.of(context).size.height * 0.8, // 80% da altura da tela
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.9,
         constraints: const BoxConstraints(
           maxWidth: 700,
           maxHeight: 750,
-        ), // Limites para desktop
+        ),
         child: Column(
           children: [
-            // Cabeçalho do diálogo
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Vamos Começar!',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Vamos Começar!',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        'Primeiro, precisamos conhecer você melhor',
-                        style: TextStyle(fontSize: 16, color: Colors.black54),
-                      ),
-                    ],
+                        SizedBox(height: 5),
+                        Text(
+                          'Primeiro, precisamos conhecer você melhor',
+                          style: TextStyle(fontSize: 16, color: Colors.black54),
+                        ),
+                      ],
+                    ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () {
-                      Navigator.of(context).pop(); // Fecha o diálogo
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
               ),
             ),
             const Divider(height: 1, thickness: 1),
-            // Conteúdo do formulário com PageView
             Expanded(
               child: PageView(
                 controller: _pageController,
-                physics:
-                    const NeverScrollableScrollPhysics(), // Desabilita o arrastar entre as páginas
+                physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (index) {
                   setState(() {
                     _currentPage = index;
                   });
                 },
                 children: [
-                  // Página 1: Identidade & Essência (Q1-6)
+                  // PAGE 0 (Q1-Q4)
                   _buildPage(
                     pageIndex: 0,
                     children: [
@@ -1371,8 +1385,7 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _professionController,
-                        hintText:
-                            'Designer especializada em transformação digital e estratégias de crescimento',
+                        hintText: 'Designer especializada em transformação digital e estratégias de crescimento',
                         maxLines: 2,
                         validator: (value) =>
                             value!.isEmpty ? 'Campo obrigatório' : null,
@@ -1394,14 +1407,18 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                         hintText: 'Inovadora, Confiável, Inspiradora',
                         maxLines: 2,
                       ),
-                      const SizedBox(height: 20),
+                    ],
+                  ),
+                  // PAGE 1 (Q5-Q8)
+                  _buildPage(
+                    pageIndex: 1,
+                    children: [
                       _buildQuestionTitle(
                         '5. O que te motivou a iniciar essa carreira?',
                       ),
                       _buildTextField(
                         controller: _motivationController,
-                        hintText:
-                            'A paixão por ajudar pessoas a alcançarem seus objetivos...',
+                        hintText: 'A paixão por ajudar pessoas a alcançarem seus objetivos...',
                         maxLines: 3,
                       ),
                       const SizedBox(height: 20),
@@ -1410,23 +1427,16 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _storyController,
-                        hintText:
-                            'Quando ajudei uma startup a crescer 300% em 6 meses...',
+                        hintText: 'Quando ajudei uma startup a crescer 300% em 6 meses...',
                         maxLines: 3,
                       ),
-                    ],
-                  ),
-                  // Página 2: Percepção & Posicionamento (Q7-11)
-                  _buildPage(
-                    pageIndex: 1,
-                    children: [
+                      const SizedBox(height: 20),
                       _buildQuestionTitle(
                         '7. Como você gostaria de ser lembrado(a) pelas pessoas?',
                       ),
                       _buildTextField(
                         controller: _rememberedByController,
-                        hintText:
-                            'Como alguém que transforma ideias em resultados concretos...',
+                        hintText: 'Como alguém que transforma ideias em resultados concretos...',
                         maxLines: 3,
                       ),
                       const SizedBox(height: 20),
@@ -1435,18 +1445,21 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _uniqueSellingPointController,
-                        hintText:
-                            'Combino visão estratégica com execução prática, entregando resultados...',
+                        hintText: 'Combino visão estratégica com execução prática, entregando resultados...',
                         maxLines: 3,
                       ),
-                      const SizedBox(height: 20),
+                    ],
+                  ),
+                  // PAGE 2 (Q9-Q12)
+                  _buildPage(
+                    pageIndex: 2,
+                    children: [
                       _buildQuestionTitle(
                         '9. O que seus clientes costumam elogiar mais em você?',
                       ),
                       _buildTextField(
                         controller: _clientComplimentsController,
-                        hintText:
-                            'Minha capacidade de simplificar o complexo e minha dedicação...',
+                        hintText: 'Minha capacidade de simplificar o complexo e minha dedicação...',
                         maxLines: 3,
                       ),
                       const SizedBox(height: 20),
@@ -1463,33 +1476,30 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _admiredBrandsProfessionalsController,
-                        hintText:
-                            '@garyvee, @melrobbins, @simonsinekofficial - pela autenticidade e impacto',
+                        hintText: '@garyvee, @melrobbins, @simonsinekofficial - pela autenticidade e impacto',
                         maxLines: 3,
                       ),
-                    ],
-                  ),
-                  // Página 3: Público-Alvo Ideal (Q12-16)
-                  _buildPage(
-                    pageIndex: 2,
-                    children: [
+                      const SizedBox(height: 20),
                       _buildQuestionTitle(
                         '12. Quem é o seu cliente ideal? (idade, profissão, estilo de vida, rotina)',
                       ),
                       _buildTextField(
                         controller: _idealClientController,
-                        hintText:
-                            'Empreendedores entre 30-45 anos, donos de pequenas e médias empresas...',
+                        hintText: 'Empreendedores entre 30-45 anos, donos de pequenas e médias empresas...',
                         maxLines: 3,
                       ),
-                      const SizedBox(height: 20),
+                    ],
+                  ),
+                  // PAGE 3 (Q13-Q16)
+                  _buildPage(
+                    pageIndex: 3,
+                    children: [
                       _buildQuestionTitle(
                         '13. Quais são os principais problemas, desejos ou dores que esse cliente tem?',
                       ),
                       _buildTextField(
                         controller: _clientProblemsController,
-                        hintText:
-                            'Falta de estratégia digital clara, dificuldade em converter leads...',
+                        hintText: 'Falta de estratégia digital clara, dificuldade em converter leads...',
                         maxLines: 3,
                       ),
                       const SizedBox(height: 20),
@@ -1498,8 +1508,7 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _clientSolutionSearchController,
-                        hintText:
-                            'Google, LinkedIn, indicações de outros empresários, YouTube',
+                        hintText: 'Google, LinkedIn, indicações de outros empresários, YouTube',
                         maxLines: 2,
                       ),
                       const SizedBox(height: 20),
@@ -1508,8 +1517,7 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _uniqueHelpController,
-                        hintText:
-                            'Ofereço consultoria personalizada com foco em ROI e acompanhamento contínuo...',
+                        hintText: 'Ofereço consultoria personalizada com foco em ROI e acompanhamento contínuo...',
                         maxLines: 3,
                       ),
                       const SizedBox(height: 20),
@@ -1518,15 +1526,14 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _consumedBrandsController,
-                        hintText:
-                            '@sebrae, @endeavorbrasil, @startupbrasil, @exame',
+                        hintText: '@sebrae, @endeavorbrasil, @startupbrasil, @exame',
                         maxLines: 3,
                       ),
                     ],
                   ),
-                  // Página 4: Presença Digital & Comunicação (Q17-21)
+                  // PAGE 4 (Q17-Q20)
                   _buildPage(
-                    pageIndex: 3,
+                    pageIndex: 4,
                     children: [
                       _buildQuestionTitle(
                         '17. Em quais redes sociais você está mais presente atualmente?',
@@ -1542,8 +1549,7 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _publishFrequencyController,
-                        hintText:
-                            'LinkedIn: diariamente, Instagram: 3x por semana, YouTube: semanalmente',
+                        hintText: 'LinkedIn: diariamente, Instagram: 3x por semana, YouTube: semanalmente',
                         maxLines: 2,
                       ),
                       const SizedBox(height: 20),
@@ -1552,8 +1558,7 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _contentWorksBestController,
-                        hintText:
-                            'Cases de sucesso, dicas práticas em vídeos curtos, bastidores de projetos',
+                        hintText: 'Cases de sucesso, dicas práticas em vídeos curtos, bastidores de projetos',
                         maxLines: 3,
                       ),
                       const SizedBox(height: 20),
@@ -1594,29 +1599,27 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                    ],
+                  ),
+                  // PAGE 5 (Q21-Q24)
+                  _buildPage(
+                    pageIndex: 5,
+                    children: [
                       _buildQuestionTitle(
                         '21. Quais marcas ou pessoas você admira pela forma como se comunicam com o público? (Coloque os @s ou links que te inspiram)',
                       ),
                       _buildTextField(
                         controller: _admiredCommunicationBrandsController,
-                        hintText:
-                            '@apple, @nike, @patagonia - pela clareza e propósito bem definidos',
+                        hintText: '@apple, @nike, @patagonia - pela clareza e propósito bem definidos',
                         maxLines: 2,
                       ),
-                    ],
-                  ),
-                  // Página 5: Objetivos e Direção & Expressão Criativa & Confirmação Final (Q22-26)
-                  _buildPage(
-                    pageIndex: 4,
-                    children: [
+                      const SizedBox(height: 20),
                       _buildQuestionTitle(
                         '22. O que você gostaria de alcançar com o reposicionamento da sua marca pessoal?',
                       ),
                       _buildTextField(
                         controller: _repositioningGoalController,
-                        hintText:
-                            'Ser reconhecida como referência em transformação digital para PMEs no Brasil',
+                        hintText: 'Ser reconhecida como referência em transformação digital para PMEs no Brasil',
                         maxLines: 3,
                       ),
                       const SizedBox(height: 20),
@@ -1625,8 +1628,7 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _communicationChallengesController,
-                        hintText:
-                            'Consistência entre plataformas e criação de conteúdo que gere engajamento real',
+                        hintText: 'Consistência entre plataformas e criação de conteúdo que gere engajamento real',
                         maxLines: 3,
                       ),
                       const SizedBox(height: 20),
@@ -1635,18 +1637,21 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                       _buildTextField(
                         controller: _ifRecognizedChangeController,
-                        hintText:
-                            'Teria mais seletividade nos projetos e poderia focar em clientes com maior potencial de impacto',
+                        hintText: 'Teria mais seletividade nos projetos e poderia focar em clientes com maior potencial de impacto',
                         maxLines: 3,
                       ),
-                      const SizedBox(height: 20),
+                    ],
+                  ),
+                  // PAGE 6 (Q25-Q26) - Final page
+                  _buildPage(
+                    pageIndex: 6,
+                    children: [
                       _buildQuestionTitle(
                         '25. Se sua marca fosse uma música, uma cor ou uma cidade, qual seria? (Responda com o que vier à mente. Não existe certo ou errado.)',
                       ),
                       _buildTextField(
                         controller: _brandAsSomethingController,
-                        hintText:
-                            'Música: "Stronger" - Kelly Clarkson, Cor: Azul royal, Cidade: São Paulo',
+                        hintText: 'Música: "Stronger" - Kelly Clarkson, Cor: Azul royal, Cidade: São Paulo',
                         maxLines: 2,
                       ),
                       const SizedBox(height: 20),
@@ -1679,7 +1684,6 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                 ],
               ),
             ),
-            // Botões de navegação
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
@@ -1705,7 +1709,7 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                   ElevatedButton(
                     onPressed: _nextPage,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0D47A1), // Azul médio
+                      backgroundColor: const Color(0xFF0D47A1),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
@@ -1716,7 +1720,7 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
                       ),
                     ),
                     child: Text(
-                      _currentPage == 4 ? 'Finalizar Questionário' : 'Próximo',
+                      _currentPage == 6 ? 'Finalizar Questionário' : 'Próximo',
                     ),
                   ),
                 ],
@@ -1728,7 +1732,6 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
     );
   }
 
-  // Widget auxiliar para criar cada página do formulário
   Widget _buildPage({required int pageIndex, required List<Widget> children}) {
     return Form(
       key: _formKeys[pageIndex],
@@ -1742,11 +1745,9 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
     );
   }
 
-  // Widget auxiliar para criar campos de texto
   Widget _buildTextField({
     required TextEditingController controller,
-    String labelText =
-        '', // LabelText agora é opcional, pois o título da pergunta é separado
+    String labelText = '',
     String? hintText,
     TextInputType keyboardType = TextInputType.text,
     int maxLines = 1,
@@ -1758,9 +1759,7 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
       maxLines: maxLines,
       validator: validator,
       decoration: InputDecoration(
-        labelText: labelText.isNotEmpty
-            ? labelText
-            : null, // Só mostra label se não for vazio
+        labelText: labelText.isNotEmpty ? labelText : null,
         hintText: hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -1784,7 +1783,6 @@ class _QuestionnaireDialogState extends State<QuestionnaireDialog> {
     );
   }
 
-  // Widget auxiliar para títulos de perguntas
   Widget _buildQuestionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
