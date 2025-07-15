@@ -221,7 +221,7 @@ class _LandingPageState extends State<LandingPage> {
         crossAxisAlignment: CrossAxisAlignment.center, // Centraliza o conteúdo
         children: [
           Text(
-            'Sua marca com identidade',
+            'Sua marca é unica',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: isDesktop ? 48 : 32,
@@ -803,7 +803,7 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                               SizedBox(width: 8),
                               Text(
-                                'contato@idenzza.com.br',
+                                'alanrendeiro.fotografia@gmail.com',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -821,7 +821,7 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                               SizedBox(width: 8),
                               Text(
-                                '(11) 99999-9999',
+                                '(91) 98972-7997',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -839,7 +839,7 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                               SizedBox(width: 8),
                               Text(
-                                'São Paulo, SP',
+                                'Tv Doutor Moraes 727, Belém- PA',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -922,7 +922,7 @@ class _LandingPageState extends State<LandingPage> {
                         Icon(Icons.email, color: Colors.white, size: 18),
                         SizedBox(width: 8),
                         Text(
-                          'contato@idenzza.com.br',
+                          'alanrendeiro.fotografia@gmail.com',
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ],
@@ -933,7 +933,7 @@ class _LandingPageState extends State<LandingPage> {
                         Icon(Icons.phone, color: Colors.white, size: 18),
                         SizedBox(width: 8),
                         Text(
-                          '(11) 99999-9999',
+                          '(91) 98972-7997',
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ],
@@ -948,7 +948,7 @@ class _LandingPageState extends State<LandingPage> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'São Paulo, SP',
+                          'Tv Doutor Moraes 727, Belém- PA',
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ],
@@ -1027,7 +1027,6 @@ class _LandingPageState extends State<LandingPage> {
   Widget _buildSocialMediaIcon(String imageUrl, String altText) {
     return InkWell(
       onTap: () {
-        // TODO: Implementar a ação para as redes sociais
         print('$altText clicado!');
       },
       child: Container(

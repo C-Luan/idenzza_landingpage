@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Esta regra permite que qualquer usuário autenticado (request.auth != null)
+    // leia e escreva em sua própria subcoleção de questionários.
+    // O 'userId' na path deve corresponder ao UID do usuário autenticado.
+    match /idenzza/responses/users/{userId}/questionnaires/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
